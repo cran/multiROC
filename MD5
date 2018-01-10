@@ -1,0 +1,16 @@
+ddc9d309e21aac52c8f85f4a173dd1b9 *DESCRIPTION
+f77e96414b13c432895cf23f1e48c281 *NAMESPACE
+88cd3eb9f34002e38466a18fdcb77bec *R/cal_confus.R
+80eafa1c4818074d768cd02a18c53b0e *R/global_var.R
+67c33231943d2ee7cab2caf523eb4910 *R/multi_roc.R
+6742f739b8b80518ba7ba43de20ee868 *R/roc_auc.R
+3245790e87973a2ec75d3f5932e990bb *build/vignette.rds
+2c9c456f441f71311027695f2a6a5f19 *data/test_data.rda
+e8d7cc9ead1db0e25468c89a3c0b9f8c *inst/doc/my-vignette.R
+4c8e9f2ec35d19435084f7140da67e41 *inst/doc/my-vignette.Rmd
+c61000d50108b1f8a56a50aedc3a1b6f *inst/doc/my-vignette.html
+74a0e50cb7d7882a6f0dd99b2bdc587f *man/cal_confus.Rd
+906ea4ebc2b2275487254d1197a448ba *man/multi_roc.Rd
+88b2c6cbceebcd9e41c2c661599fe9a9 *man/roc_auc.Rd
+0ed38306f2af280b150668a855a7c97a *man/test_data.Rd
+4c8e9f2ec35d19435084f7140da67e41 *vignettes/my-vignette.Rmd
