@@ -17,9 +17,9 @@ cal_confus <- function(true_vec, pred_vec, force_diag=TRUE) {
   results$PPV <- results$TP/(results$TP+results$FP)
 
   if (force_diag) {
-    results$TPR <- c(0, results$TPR, 1)
-    results$FPR <- c(0, results$FPR, 1)
-    # results$PPV <- c(1, results$PPV, 0)
+    results$TPR <- c(0, results$TPR)
+    results$FPR <- c(0, results$FPR)
+    results$PPV <- c(results$PPV[1], results$PPV)
   }
   return(results)
 }

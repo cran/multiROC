@@ -1,11 +1,11 @@
-\name{roc_auc}
-\alias{roc_auc}
+\name{cal_auc}
+\alias{cal_auc}
 \title{Area under ROC curve}
 \description{This function calculates the area under ROC curve}
-\usage{roc_auc(TPR, FPR)}
+\usage{cal_auc(X, Y)}
 \arguments{
-\item{TPR}{A vector of true positive rate}
-\item{FPR}{A vector of false positive rate, same length with TPR}
+\item{X}{A vector of true positive rate}
+\item{Y}{A vector of false positive rate, same length with TPR}
 }
 \details{
 This function calculates the area under ROC curve.
@@ -26,8 +26,8 @@ data(test_data)
 true_vec <- test_data[, 1]
 pred_vec <- test_data[, 5]
 confus_res <- cal_confus(true_vec, pred_vec)
-AUC_res <- roc_auc(confus_res$TPR, confus_res$FPR)
+AUC_res <- cal_auc(confus_res$TPR, confus_res$FPR)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{roc_auc}% use one of  RShowDoc("KEYWORDS")
+\keyword{cal_auc}% use one of  RShowDoc("KEYWORDS")

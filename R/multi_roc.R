@@ -4,11 +4,11 @@
 #' @importFrom magrittr "%<>%"
 #' @importFrom stats "approx"
 
-multi_roc <- function(true_pred, force_diag=TRUE) {
-  group_names <- colnames(true_pred) %>% extract(grepl('_true', .)) %>% gsub('(.*)_true', '\\1', .)
-  method_names <- colnames(true_pred) %>% extract(grepl('_pred.*', .)) %>%
+multi_roc <- function(data, force_diag=TRUE) {
+  group_names <- colnames(data) %>% extract(grepl('_true', .)) %>% gsub('(.*)_true', '\\1', .)
+  method_names <- colnames(data) %>% extract(grepl('_pred.*', .)) %>%
     gsub('.*_pred_(.*)', '\\1', .) %>% unique
-  y_true <- true_pred[, grepl('_true', colnames(true_pred))]
+  y_true <- data[, grepl('_true', colnames(data))]
   colnames(y_true) %<>% gsub('_true', '', .)
   y_true %<>% .[, match(group_names, colnames(.))]
 
@@ -21,7 +21,7 @@ multi_roc <- function(true_pred, force_diag=TRUE) {
     res_se[[i]] <- list()
     res_auc[[i]] <- list()
     method <- method_names[i]
-    y_pred <- true_pred[, grepl(method, colnames(true_pred))]
+    y_pred <- data[, grepl(method, colnames(data))]
     colnames(y_pred) %<>% gsub('_pred.*', '', .)
     y_pred %<>% .[, match(group_names, colnames(.))]
     ## Reorder the pred columns ##
@@ -31,7 +31,7 @@ multi_roc <- function(true_pred, force_diag=TRUE) {
       roc_res <- cal_confus(y_true_vec, y_pred_vec, force_diag=force_diag)
       res_sp[[i]][[j]] <- 1-roc_res$FPR
       res_se[[i]][[j]] <- roc_res$TPR
-      res_auc[[i]][[j]] <- roc_auc(roc_res$TPR, roc_res$FPR)
+      res_auc[[i]][[j]] <- cal_auc(X=roc_res$FPR, Y=roc_res$TPR)
     }
     names(res_sp[[i]]) <- group_names
     names(res_se[[i]]) <- group_names
@@ -45,18 +45,18 @@ multi_roc <- function(true_pred, force_diag=TRUE) {
     all_se <- all_se/length(group_names)
     res_sp[[i]]$macro <- all_sp
     res_se[[i]]$macro <- all_se
-    if (force_diag) {
-      res_sp[[i]]$macro <- c(1, res_sp[[i]]$macro, 0)
-      res_se[[i]]$macro <- c(0, res_se[[i]]$macro, 1)
-    }
-    res_auc[[i]]$macro <- roc_auc(res_se[[i]]$macro, 1-res_sp[[i]]$macro)
+    # if (force_diag) {
+    #   res_sp[[i]]$macro <- c(1, res_sp[[i]]$macro, 0)
+    #   res_se[[i]]$macro <- c(0, res_se[[i]]$macro, 1)
+    # }
+    res_auc[[i]]$macro <- cal_auc(X=1-res_sp[[i]]$macro, Y=res_se[[i]]$macro)
 
     y_true_vec_bin <- as.vector(as.matrix(y_true))
     y_pred_vec_bin <- as.vector(as.matrix(y_pred))
     roc_res_bin <- cal_confus(y_true_vec_bin, y_pred_vec_bin)
     res_sp[[i]]$micro <- 1-roc_res_bin$FPR
     res_se[[i]]$micro <- roc_res_bin$TPR
-    res_auc[[i]]$micro <- roc_auc(res_se[[i]]$micro, 1-res_sp[[i]]$micro)
+    res_auc[[i]]$micro <- cal_auc(X=1-res_sp[[i]]$micro, Y=res_se[[i]]$micro)
   }
   names(res_sp) <- method_names
   names(res_se) <- method_names
